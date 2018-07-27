@@ -17,7 +17,7 @@ self::$managesetting['wizardgradebooksetup'] = new grade_plugin_info('wizard_set
                 get_string('gradebooksetup', 'core_wizardcategories'));
 ~~~
 
-> Copiar la siguiente instrucción en la linea 2953 del archivo  
+> Copiar la siguiente instrucción en la linea 4359 del archivo  
 lib/navigationlib.php
 ~~~
 // Check if we can view the gradebook's setup page to load the wizard
