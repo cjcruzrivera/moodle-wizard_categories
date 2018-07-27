@@ -15,15 +15,16 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * The Gradebook setup page.
+ * The Wizard Gradebook setup page.
  *
- * @package   core_grades
- * @copyright 2008 Nicolas Connault
+ * @package   wizard_categories
+ * @copyright  2018 Camilo José Cruz Rivera <cruz.camilo@correounivalle.edu.co>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 require_once '../../../config.php';
 require_once $CFG->dirroot.'/grade/lib.php';
+require_once $CFG->dirroot.'/grade/edit/wizard_categories/wizard_lib.php';
 
 $courseid        = required_param('id', PARAM_INT);
 $action          = optional_param('action', 0, PARAM_ALPHA);
@@ -49,8 +50,9 @@ print_grade_page_head($courseid, 'settings', 'wizard_setup', get_string('gradebo
 // Print Table of categories and items
 echo $OUTPUT->box_start('gradetreebox generalbox');
 
-$tpldata = new StdClass;
-echo $OUTPUT->render_from_template('core_grades/prueba', $tpldata);
+$html = getCategoriesandItems($courseid);
+echo $html;
+// echo $OUTPUT->render_from_template('core_grades_edit/wizard_categories', $tpldata);
 
 echo $OUTPUT->box_end();
 
