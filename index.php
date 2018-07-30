@@ -41,7 +41,7 @@ $context = context_course::instance($course->id);
 require_capability('moodle/grade:manage', $context);
 $PAGE->requires->css('/local/wizardcategories/style/styles_wizard.css', true);
 
-//$PAGE->requires->js_call_amd('core_grades/edittree_index', 'enhance');
+$PAGE->requires->js_call_amd('local_wizardcategories/wizard_categories', 'init');
 
 
 print_grade_page_head($courseid, 'settings', null, '', false, false, false);

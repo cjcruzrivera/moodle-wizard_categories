@@ -2,13 +2,13 @@
  * @module block_ases/global_grade_book
  */
 
-define(['jquery', 'block_ases/bootstrap', 'block_ases/sweetalert', 'block_ases/jqueryui'], function ($, bootstrap, sweetalert, jqueryui) {
+define(['jquery', 'block_ases/bootstrap', 'block_ases/sweetalert', 'block_ases/jqueryui'], function ($, swal) {
 
     return {
- 
+
         init: function () {
-            alert('hola');
             var old_weight;
+
             //Metodos de Wizard de crear categorias e items
             $(document).on('click', '#wizard_button', function () {
                 $("#modalCategories").modal({
@@ -148,7 +148,7 @@ define(['jquery', 'block_ases/bootstrap', 'block_ases/sweetalert', 'block_ases/j
                     return;
                 }
 
-                console.log("nombre: "+new_nombre + "\n peso:" + new_peso + "\n MAXpeso:" + maxweight+ "\n new_calif: " + new_calif);
+                console.log("nombre: " + new_nombre + "\n peso:" + new_peso + "\n MAXpeso:" + maxweight + "\n new_calif: " + new_calif);
 
                 if (new_peso > maxweight) {
                     swal({
@@ -369,7 +369,6 @@ define(['jquery', 'block_ases/bootstrap', 'block_ases/sweetalert', 'block_ases/j
 
             }
 
-
             function deleteElement(id_e, course_id, type_e) {
                 $.ajax({
                     type: "POST",
@@ -398,6 +397,7 @@ define(['jquery', 'block_ases/bootstrap', 'block_ases/sweetalert', 'block_ases/j
                     },
                 });
             }
+
             function getCourseid() {
                 var informacionUrl = window.location.search.split("&");
                 for (var i = 0; i < informacionUrl.length; i++) {
