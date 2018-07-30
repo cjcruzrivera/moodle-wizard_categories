@@ -22,8 +22,10 @@
  * @copyright  2018 Camilo José Cruz Rivera <cruz.camilo@correounivalle.edu.co>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-require_once '../../../config.php';
-require_once $CFG->libdir . '/gradelib.php';
+
+
+require_once '../../config.php';
+require_once $CFG->libdir . '../../lib/gradelib.php';
 require_once $CFG->dirroot . '/grade/lib.php';
 require_once $CFG->dirroot . '/grade/report/user/lib.php';
 // require_once $CFG->dirroot . '/blocks/ases/managers/lib/student_lib.php';
@@ -31,6 +33,7 @@ require_once $CFG->dirroot . '/grade/report/user/lib.php';
 ///*********************************///
 ///*** Wizard categories methods ***///
 ///*********************************///
+
 
 /** INSERTION METHODS **/
 
