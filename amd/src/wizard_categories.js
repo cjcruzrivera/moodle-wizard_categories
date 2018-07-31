@@ -14,7 +14,7 @@ define(['jquery', 'local_wizardcategories/bootstrap', 'local_wizardcategories/sw
             /**
              * Event to close modal
              */
-            $(document).on('click', '.mymodal-close', function () {
+            $(document).on('click', '.mymodal-close, #cancel', function () {
                 $('.fondo').hide();
             });
 
@@ -120,6 +120,9 @@ define(['jquery', 'local_wizardcategories/bootstrap', 'local_wizardcategories/sw
 
             });
 
+            /**
+             * Event to save changes on edit modal validating all data
+             */
             $(document).on('click', '#save_edit', function () {
                 var id_element = $(this).attr("name");
                 var new_nombre = $("#nombre_editar").val();
@@ -219,6 +222,9 @@ define(['jquery', 'local_wizardcategories/bootstrap', 'local_wizardcategories/sw
                 });
             });
 
+            /**
+             * Event to confirm the deletion of an item or a category 
+             */
             $(document).on('click', '.delete', function () {
                 var element = $(this).parent().parent().parent().attr('id').split('_');
                 var courseid = getCourseid();
@@ -373,16 +379,24 @@ define(['jquery', 'local_wizardcategories/bootstrap', 'local_wizardcategories/sw
 
             }
 
-            function deleteElement(id_e, course_id, type_e) {
+            /**
+            * @method deleteElement
+            * @desc Delete an item or category 
+            * @param {int} id_e 
+            * @param {int} id_course 
+            * @param {char} type_e 
+            * @return {void}
+            */
+            function deleteElement(id_e, id_course, type_e) {
                 $.ajax({
                     type: "POST",
                     data: {
                         type_ajax: "deleteElement",
                         id: id_e,
-                        courseid: course_id,
+                        courseid: id_course,
                         type: type_e
                     },
-                    url: "../managers/grade_categories/grader_processing.php",
+                    url: "processing.php",
                     success: function (msg) {
                         swal({
                             title: "Listo",
@@ -392,7 +406,7 @@ define(['jquery', 'local_wizardcategories/bootstrap', 'local_wizardcategories/sw
                             showConfirmButton: false,
                             timer: 1200,
                         });
-                        loadCategories(course_id);
+                        loadCategories(id_course);
                     },
                     dataType: "json",
                     cache: "false",
@@ -418,6 +432,12 @@ define(['jquery', 'local_wizardcategories/bootstrap', 'local_wizardcategories/sw
                 return curso;
             }
 
+            /**
+            * @method loadCategories
+            * @desc Load categories and items in the wizard 
+            * @param {int} id_course 
+            * @return {void}
+            */
             function loadCategories(id) {
                 $.ajax({
                     type: "POST",
@@ -425,9 +445,9 @@ define(['jquery', 'local_wizardcategories/bootstrap', 'local_wizardcategories/sw
                         course: id,
                         type: "loadCat"
                     },
-                    url: "../managers/grade_categories/grader_processing.php",
+                    url: "processing.php",
                     success: function (msg) {
-                        $("#mymodalbody").html(msg);
+                        $("#info").html(msg);
                     },
                     dataType: "text",
                     cache: "false",

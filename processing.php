@@ -15,7 +15,8 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Plugin Wizard Categories
+ * Plugin Wizard Categories. 
+ * Ajax processing file
  *
  * @author     Camilo José Cruz Rivera
  * @package    wizard_cateogries
