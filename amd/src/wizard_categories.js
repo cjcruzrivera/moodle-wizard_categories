@@ -280,7 +280,7 @@ define(['jquery', 'local_wizardcategories/bootstrap', 'local_wizardcategories/sw
                 $('.edit').prop('disabled', true);
 
                 var newDiv = $("<div class = 'divForm'>");
-                newDiv.load("../templates/categories_form.html");
+                newDiv.load("templates/categories_form.html");
 
                 var parent = $(this).parent().parent();
                 parent.append('<hr style = "border-top: 1px solid #ddd">');
