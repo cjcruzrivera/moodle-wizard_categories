@@ -1,8 +1,8 @@
 /**
- * @module block_ases/global_grade_book
+ * @module local_wizardcategories/wizard_categories
  */
 
-define(['jquery', 'block_ases/bootstrap', 'block_ases/sweetalert', 'block_ases/jqueryui'], function ($, swal) {
+define(['jquery', 'local_wizardcategories/bootstrap', 'local_wizardcategories/sweetalert', 'local_wizardcategories/jqueryui'], function ($, sweetalert) {
 
     return {
 
@@ -10,24 +10,21 @@ define(['jquery', 'block_ases/bootstrap', 'block_ases/sweetalert', 'block_ases/j
             var old_weight;
 
             //Metodos de Wizard de crear categorias e items
-            $(document).on('click', '#wizard_button', function () {
-                $("#modalCategories").modal({
-                    backdrop: false
-                });
-                $('.fondo').show();
-                id = getCourseid();
-                loadCategories(id);
-            });
 
+            /**
+             * Event to close modal
+             */
             $(document).on('click', '.mymodal-close', function () {
-                location.reload();
                 $('.fondo').hide();
             });
 
+            /**
+             * Event to open edit modal and load all information
+             */
             $(document).on('click', '.edit', function () {
                 //se carga titulo (item o categoria)
                 var titulo = $(this).attr('title');
-                $("#titulo").text(titulo)
+                $("#titulo").text(titulo);
 
                 var curso = false;
 
@@ -39,7 +36,6 @@ define(['jquery', 'block_ases/bootstrap', 'block_ases/sweetalert', 'block_ases/j
                 if ($(this).hasClass('curso')) {
                     curso = true;
                     $('#alta').hide();
-                    console.log("CURSO");
                     $("#nombre_editar").hide();
                     $("#label_nombre").hide();
                     $('#div_padres').hide();
@@ -56,14 +52,14 @@ define(['jquery', 'block_ases/bootstrap', 'block_ases/sweetalert', 'block_ases/j
                     var tipo = $(this).parent().parent().attr('id');
                     $('#otro').hide();
                     if (tipo != 10 && tipo != 0 && tipo != 6) {
-                        tipo = 99
+                        tipo = 99;
                         $('#otro').show();
                     }
-                    $('#calific').prop('value', tipo)
+                    $('#calific').prop('value', tipo);
                     var type = 'cat';
                     var nombre = $(this).parent().parent().text();
                     if (nombre.search("-") == -1) {
-                        nom_text = nombre.split("(");
+                        var nom_text = nombre.split("(");
                         nombre = nom_text[0];
                         peso = nom_text[1];
                         if (!curso) {
@@ -79,17 +75,17 @@ define(['jquery', 'block_ases/bootstrap', 'block_ases/sweetalert', 'block_ases/j
                         var maxweight = $(this).attr('data-maxweight');
                         $('.maxweight-edit').attr('id', maxweight);
                     } else {
-                        nombre = nombre.split("-")[0]
-                        $('#peso').hide()
+                        nombre = nombre.split("-")[0];
+                        $('#peso').hide();
                     }
                 } else {
                     //se oculta el tipo de calificacion
-                    $('#type_cal').hide()
+                    $('#type_cal').hide();
                     //se carga el peso de tenerlo
                     var peso = $(this).parent().parent().prev().text();
                     if (peso == '-') {
-                        $('#peso').hide()
-                        $('#peso_editar').val(peso)
+                        $('#peso').hide();
+                        $('#peso_editar').val(peso);
                     } else {
                         $('#peso').show();
                         peso = peso.replace('(', '');
@@ -97,7 +93,7 @@ define(['jquery', 'block_ases/bootstrap', 'block_ases/sweetalert', 'block_ases/j
                         peso = peso.replace(' ', '');
                         peso = peso.replace('%', '');
                         old_weight = peso;
-                        $('#peso_editar').val(peso)
+                        $('#peso_editar').val(peso);
 
                         var maxweight = $(this).parent().attr('id');
                         $('.maxweight-edit').attr('id', maxweight);
@@ -112,17 +108,16 @@ define(['jquery', 'block_ases/bootstrap', 'block_ases/sweetalert', 'block_ases/j
                     }
                 }
                 //se carga el nombre
-                $("#nombre_editar").val(nombre)
-
-
+                $("#nombre_editar").val(nombre);
 
                 //se cargan las categorias seleccionando la categoria padre del elemento
-                load_parent_categorie(id_course, id_element, type)
-
+                load_parent_category(id_course, id_element, type);
                 //se abre el modal
                 $("#edit").modal({
                     backdrop: false
                 });
+                $('.fondo').show();
+
             });
 
             $(document).on('click', '#save_edit', function () {
@@ -148,7 +143,6 @@ define(['jquery', 'block_ases/bootstrap', 'block_ases/sweetalert', 'block_ases/j
                     return;
                 }
 
-                console.log("nombre: " + new_nombre + "\n peso:" + new_peso + "\n MAXpeso:" + maxweight + "\n new_calif: " + new_calif);
 
                 if (new_peso > maxweight) {
                     swal({
@@ -173,12 +167,10 @@ define(['jquery', 'block_ases/bootstrap', 'block_ases/sweetalert', 'block_ases/j
 
                 var titulo = $('#titulo').text();
                 if (titulo.split(' ')[1] == 'Ítem') {
-                    type_e = "it";
+                    var type_e = "it";
                     new_calif = false;
-                    // alert(type_e)
                 } else {
                     type_e = "cat";
-                    // alert(type_e)
                 }
 
                 var course_id = getCourseid();
@@ -194,7 +186,7 @@ define(['jquery', 'block_ases/bootstrap', 'block_ases/sweetalert', 'block_ases/j
                         type: "editElement",
                         parent: parent_id
                     },
-                    url: "../managers/grade_categories/grader_processing.php",
+                    url: "processing.php",
                     success: function (msg) {
                         if (msg.error) {
                             swal('Error',
@@ -210,6 +202,7 @@ define(['jquery', 'block_ases/bootstrap', 'block_ases/sweetalert', 'block_ases/j
                                 timer: 1300,
                             });
                             $("#edit").modal('hide');
+                            $('.fondo').hide();
                             loadCategories(course_id);
                             console.log(msg);
                         }
@@ -217,13 +210,14 @@ define(['jquery', 'block_ases/bootstrap', 'block_ases/sweetalert', 'block_ases/j
                     dataType: "json",
                     cache: "false",
                     error: function (msg) {
+                        swal('Server Error',
+                                msg.error,
+                                'error');
                         console.log("AJAXerror");
                         console.log(msg);
                     },
                 });
-
-
-            })
+            });
 
             $(document).on('click', '.delete', function () {
                 var element = $(this).parent().parent().parent().attr('id').split('_');
@@ -231,9 +225,9 @@ define(['jquery', 'block_ases/bootstrap', 'block_ases/sweetalert', 'block_ases/j
                 var id = element[1];
                 var type = element[0];
                 if (type === 'cat') {
-                    var tipo = "esta categoría"
+                    var tipo = "esta categoría";
                 } else {
-                    var tipo = "este item"
+                    var tipo = "este item";
                 }
                 var titulo = "Esta seguro que desea eliminar " + tipo + "?";
                 swal({
@@ -309,15 +303,15 @@ define(['jquery', 'block_ases/bootstrap', 'block_ases/sweetalert', 'block_ases/j
                             }
                         });
                         $('#inputValor').on('keypress', function (e) {
-                            tecla = (document.all) ? e.keyCode : e.which;
+                            var tecla = (document.all) ? e.keyCode : e.which;
 
                             //Tecla de retroceso para borrar y el punto(.) siempre la permite
                             if (tecla == 8 || tecla == 46) {
                                 return true;
                             }
                             // Patron de entrada, en este caso solo acepta numeros
-                            patron = /[0-9]/;
-                            tecla_final = String.fromCharCode(tecla);
+                            var patron = /[0-9]/;
+                            var tecla_final = String.fromCharCode(tecla);
                             return patron.test(tecla_final);
 
                         });
@@ -347,7 +341,15 @@ define(['jquery', 'block_ases/bootstrap', 'block_ases/sweetalert', 'block_ases/j
                 }, 400);
             });
 
-            function load_parent_categorie(id_course, id_element, type_e) {
+            /**
+            * @method load_parent_category
+            * @desc Load parent categories options in a select 
+            * @param {int} id_course 
+            * @param {int} id_element 
+            * @param {char} type_e 
+            * @return {void}
+            */
+            function load_parent_category(id_course, id_element, type_e) {
                 $.ajax({
                     type: "POST",
                     data: {
@@ -356,13 +358,15 @@ define(['jquery', 'block_ases/bootstrap', 'block_ases/sweetalert', 'block_ases/j
                         type_e: type_e,
                         type: "loadParentCat"
                     },
-                    url: "../managers/grade_categories/grader_processing.php",
+                    url: "processing.php",
                     success: function (msg) {
+                        console.log(msg);
                         $('#padre').html(msg.html);
                     },
                     dataType: "json",
                     cache: "false",
                     error: function (msg) {
+                        console.log('ajax error');
                         console.log(msg);
                     },
                 });
@@ -398,12 +402,17 @@ define(['jquery', 'block_ases/bootstrap', 'block_ases/sweetalert', 'block_ases/j
                 });
             }
 
+
+            /**
+            * @method getCourseid
+            * @desc Returns the id of the course obtained from the url
+            * @return {int} course_id
+            */
             function getCourseid() {
-                var informacionUrl = window.location.search.split("&");
-                for (var i = 0; i < informacionUrl.length; i++) {
-                    var elemento = informacionUrl[i].split("=");
-                    if (elemento[0] == "?id_course" || elemento[0] == "id_course") {
-                        var curso = elemento[1];
+                var informacionUrl = window.location.search.split("=");
+                for (var i = 0; i < informacionUrl.length; i += 2) {
+                    if (informacionUrl[i] == "?id") {
+                        var curso = informacionUrl[i + 1];
                     }
                 }
                 return curso;
@@ -479,6 +488,7 @@ define(['jquery', 'block_ases/bootstrap', 'block_ases/sweetalert', 'block_ases/j
                                     type: "error",
                                     confirmButtonColor: "#d51b23"
                                 });
+                                console.log(msg);
                             },
                         });
                     }
@@ -526,6 +536,7 @@ define(['jquery', 'block_ases/bootstrap', 'block_ases/sweetalert', 'block_ases/j
                                     type: "error",
                                     confirmButtonColor: "#d51b23"
                                 });
+                                console.log(msg);
                             },
                         });
                     }
@@ -576,6 +587,7 @@ define(['jquery', 'block_ases/bootstrap', 'block_ases/sweetalert', 'block_ases/j
                                     type: "error",
                                     confirmButtonColor: "#d51b23"
                                 });
+                                console.log(msg);
                             },
                         });
                     }
@@ -696,6 +708,6 @@ define(['jquery', 'block_ases/bootstrap', 'block_ases/sweetalert', 'block_ases/j
 
 
         }
-    }
+    };
 });
 

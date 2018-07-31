@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once 'lib.php';
+require_once 'wizard_lib.php';
 
 
 /***************************/
@@ -54,6 +54,11 @@ if (isset($_POST['course']) && isset($_POST['parent']) && isset($_POST['fullname
 
 }
 
+if (isset($_POST['course']) && isset($_POST['type']) && $_POST['type'] == "loadCat") {
+
+    $cursos = getCategoriesandItems($_POST['course']);
+    echo $cursos;
+}
 
 if (isset($_POST['type_ajax']) && isset($_POST['id']) && isset($_POST['type']) && isset($_POST['courseid']) && $_POST['type_ajax'] === "deleteElement") {
     $id = $_POST['id'];

@@ -40,6 +40,7 @@ require_login($course);
 $context = context_course::instance($course->id);
 require_capability('moodle/grade:manage', $context);
 $PAGE->requires->css('/local/wizardcategories/style/styles_wizard.css', true);
+$PAGE->requires->css('/local/wizardcategories/style/sweetalert.css', true);
 
 $PAGE->requires->js_call_amd('local_wizardcategories/wizard_categories', 'init');
 
@@ -50,14 +51,15 @@ print_grade_page_head($courseid, 'settings', null, '', false, false, false);
 // Print Table of categories and items
 echo $OUTPUT->box_start('gradetreebox generalbox');
 $title = get_string('gradebooksetup', 'grades');
-echo "<h2>$title</h2>";
-$html = getCategoriesandItems($courseid);
-echo $html;
-// echo $OUTPUT->render_from_template('core_grades_edit/wizard_categories', $tpldata);
+$html_table = getCategoriesandItems($courseid);
+
+$tpldata = new stdClass;
+$tpldata->title = $title;
+$tpldata->info = $html_table;
+
+echo $OUTPUT->render_from_template('local_wizardcategories/index', $tpldata);
 
 echo $OUTPUT->box_end();
-
-
 
 echo $OUTPUT->footer();
 die;

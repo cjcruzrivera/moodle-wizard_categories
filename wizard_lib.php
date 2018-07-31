@@ -780,7 +780,6 @@ function getAggregationofCategory($categoryid)
 function getParentCategories($id_course, $id_element, $type)
 {
     global $DB;
-
     if ($type == "it") {
         $query = "SELECT categoryid FROM {grade_items} WHERE id = $id_element";
         $id_parent = $DB->get_record_sql($query)->categoryid;
