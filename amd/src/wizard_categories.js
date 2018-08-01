@@ -8,6 +8,7 @@ define(['jquery', 'local_wizardcategories/bootstrap', 'local_wizardcategories/sw
 
         init: function () {
             var old_weight;
+            var maxweight;
 
             //Metodos de Wizard de crear categorias e items
 
@@ -264,7 +265,7 @@ define(['jquery', 'local_wizardcategories/bootstrap', 'local_wizardcategories/sw
             });
 
             $(document).on("click", ".new", function () {
-                var maxweight = $(this).parent().parent().children().next('.maxweight').attr('id');
+                maxweight = $(this).parent().parent().children().next('.maxweight').attr('id');
                 if (maxweight <= 0) {
                     swal({
                         title: "No se pueden crear mas categorías o ítems en la categoria seleccionada.",
@@ -457,7 +458,15 @@ define(['jquery', 'local_wizardcategories/bootstrap', 'local_wizardcategories/sw
                 });
             }
 
+            /**
+            * @method createElement
+            * @desc Validate info and using ajax create an element  
+            * @param {int} aggParent 
+            * @param {int} idParent 
+            * @return {void}
+            */
             function createElement(aggParent, idParent) {
+
                 var tipoItem = $("#tipoItem").val();
                 var curso = getCourseid();
 
@@ -476,7 +485,7 @@ define(['jquery', 'local_wizardcategories/bootstrap', 'local_wizardcategories/sw
                                 tipo: tipoItem,
                                 peso: weigth
                             },
-                            url: "../managers/grade_categories/grader_processing.php",
+                            url: "processing.php",
                             success: function (msg) {
                                 //se recibe el mensaje, si el ingreso fue exitoso entonces se recarga el combo de categorias padre
                                 if (msg == 1) {
@@ -526,7 +535,7 @@ define(['jquery', 'local_wizardcategories/bootstrap', 'local_wizardcategories/sw
                                 tipo: tipoItem,
                                 peso: weigth
                             },
-                            url: "../managers/grade_categories/grader_processing.php",
+                            url: "processing.php",
                             success: function (msg) {
                                 //se recibe el mensaje, si el ingreso fue exitoso entonces se recarga el combo de categorias padre
                                 if (msg == 1) {
@@ -575,7 +584,7 @@ define(['jquery', 'local_wizardcategories/bootstrap', 'local_wizardcategories/sw
                                 tipo: tipoItem,
                                 peso: weigth
                             },
-                            url: "../managers/grade_categories/grader_processing.php",
+                            url: "processing.php",
                             success: function (msg) {
                                 //se recibe el mensaje, si el ingreso fue exitoso entonces se recarga el combo de categorias padre
                                 if (msg == 1) {
@@ -621,6 +630,7 @@ define(['jquery', 'local_wizardcategories/bootstrap', 'local_wizardcategories/sw
                     });
                 }
 
+            
             }
 
             function getAggregation(index) {
@@ -633,7 +643,13 @@ define(['jquery', 'local_wizardcategories/bootstrap', 'local_wizardcategories/sw
                         break;
                 }
             }
-
+            
+            /**
+            * @method validateDataIt
+            * @desc Validate information when creating an Item 
+            * @param {int} aggregation 
+            * @return {void}
+            */
             function validateDataIt(aggregation) {
                 var nombre = $.trim($('#inputNombre').val());
                 if (nombre == '') {
@@ -649,7 +665,7 @@ define(['jquery', 'local_wizardcategories/bootstrap', 'local_wizardcategories/sw
                     var peso = $('#inputValor').val();
                     if (peso == '') {
                         swal({
-                            title: "Ingrese un peso válido entre 0 y 100",
+                            title: "Ingrese un peso válido entre 0 y " + maxweight,
                             html: true,
                             type: "warning",
                             confirmButtonColor: "#d51b23"
@@ -661,6 +677,12 @@ define(['jquery', 'local_wizardcategories/bootstrap', 'local_wizardcategories/sw
                 return true;
             }
 
+            /**
+            * @method validateDataParcial
+            * @desc Validate information when creating parcial category 
+            * @param {int} aggregation 
+            * @return {void}
+            */
             function validateDataParcial(aggregation) {
                 var nombre = $.trim($('#inputNombre').val());
                 if (nombre == '') {
@@ -676,7 +698,7 @@ define(['jquery', 'local_wizardcategories/bootstrap', 'local_wizardcategories/sw
                     var peso = $('#inputValor').val();
                     if (peso == '') {
                         swal({
-                            title: "Ingrese un peso válido entre 0 y 100",
+                            title: "Ingrese un peso válido entre 0 y " + maxweight,
                             html: true,
                             type: "warning",
                             confirmButtonColor: "#d51b23"
@@ -688,6 +710,12 @@ define(['jquery', 'local_wizardcategories/bootstrap', 'local_wizardcategories/sw
                 return true;
             }
 
+            /**
+            * @method validateDataCat
+            * @desc Validate information when creating category 
+            * @param {int} aggregation 
+            * @return {void}
+            */
             function validateDataCat(aggregation) {
                 if ($('#tipoCalificacion').prop('selectedIndex') == 0) {
                     swal({
@@ -712,7 +740,7 @@ define(['jquery', 'local_wizardcategories/bootstrap', 'local_wizardcategories/sw
                     var peso = $('#inputValor').val();
                     if (peso == '') {
                         swal({
-                            title: "Ingrese un peso válido entre 0 y 100",
+                            title: "Ingrese un peso válido entre 0 y " + maxweight,
                             html: true,
                             type: "warning",
                             confirmButtonColor: "#d51b23"
